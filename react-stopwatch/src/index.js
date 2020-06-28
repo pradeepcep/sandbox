@@ -71,7 +71,21 @@ class StopWatch extends React.Component {
     const minutes = ('' + minutes_number).padStart(2, '0');
     return (
       <>
-        <span>{minutes}</span><span>:</span><span>{seconds}</span>
+        <span
+          className='minutesDisplay'
+        >
+          {minutes}
+        </span>
+        <span
+          className='dividerDisplay'
+        >
+          :
+        </span>
+        <span
+          className='secondsDisplay'
+        >
+          {seconds}
+        </span>
         <ControlButtonStrip
           isRunning={this.state.isRunning}
           onStartPauseClick={this.handleStartPauseButtonClick}

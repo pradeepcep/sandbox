@@ -33,3 +33,46 @@ footer {
   padding: 1rem;
   color: #ababab;
 }
+
+@media(max-width: 700px) {
+  body {
+    margin: 3rem;
+    font-size: 13rem;
+  }
+  .ControlButtonsWrapper {
+    font-size: 3rem;
+  }
+  .ControlButton {
+    margin-left: 0.3rem;
+    margin-right: 0.3rem;
+  }
+}
+
+@media(max-width: 600px) {
+  body {
+    margin: 2rem;
+    font-size: 10rem;
+  }
+}
+
+@media(max-width: 460px) {
+  body {
+    font-size: 13rem;
+  }
+  .ControlButtonsWrapper {
+    font-size: 2rem;
+  }
+  .ControlButton {
+    margin-left: 0.1rem;
+    margin-right: 0.1rem;
+  }
+  .dividerDisplay {
+    display: none;
+  }
+  .minutesDisplay, .secondsDisplay {
+    display: block;
+  }
+  #root {
+    line-height: 8rem;
+  }
+}
