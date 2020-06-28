@@ -1,0 +1,48 @@
+.pointRight, .pointDown {
+  font-size: 2.6rem;
+}
+
+.pointDown {
+  display: none;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.mx-1 {
+  margin-left: 0.4rem!important;
+  margin-right: 0.4rem!important;
+}
+
+h1 {
+  width: 100%;
+  text-align: center;
+  font-size: 6rem;
+}
+
+@media(max-width: 699px) {
+  .pointDown {
+    display: block;
+  }
+  .pointRight {
+    display: none;
+  }
+  .from-input, .hand-pointer, .to-input {
+    width: 100%;
+    max-width: 100%;
+    padding: 1rem;
+  }
+  .root {
+    text-align: center;
+  }
+}
+
+@media(max-width: 385px) {
+  body {
+    margin: 0.2rem;
+  }
+  .from-input, .hand-pointer, .to-input {
+    padding: 0.3rem;
+  }
+}
