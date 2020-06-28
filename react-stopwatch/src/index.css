@@ -1,0 +1,35 @@
+body {
+  margin: 0;
+  font-family: monospace;
+  font-weight: bolder;
+  font-size: 15rem;
+  margin: 5rem;
+  text-align: center;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.ControlButtonsWrapper {
+  font-size: 5rem;
+}
+
+.ControlButton {
+  background: none;
+  border: none;
+  font-size: inherit;
+  outline: none;
+  cursor: pointer;
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+}
+
+footer {
+  font-weight: lighter;
+  font-size: 1rem;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 1rem;
+  color: #ababab;
+}
