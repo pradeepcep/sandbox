@@ -113,3 +113,7 @@
 .fillSecondaryContrast {
   background-color: var(--palette-color-secondaryContrast)!important;
 }
+
+.dangerButton {
+  background-color: var(--palette-color-contrast)!important;
+}

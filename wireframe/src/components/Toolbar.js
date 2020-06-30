@@ -1,5 +1,5 @@
 import React from 'react';
-import { FiSquare, FiCircle, FiDroplet, FiArrowDown, FiArrowUp } from "react-icons/fi";
+import { FiSquare, FiCircle, FiDroplet, FiArrowDown, FiArrowUp, FiTrash } from "react-icons/fi";
 
 class Toolbar extends React.Component {
   constructor(props) {
@@ -10,6 +10,15 @@ class Toolbar extends React.Component {
     return (
       <div id="toolbar">
         {this.props.displayFillPicker && <div
+          id="editActionsController" className="toolbarSectionWrapper"
+        >
+          <div className="toolbarSection">
+            <div className="buttonWrapper" title="Delete element"><button className="dangerButton" onClick={this.props.handleDeleteElement}><FiTrash /></button></div>
+          </div>
+        </div>
+        }
+
+        {this.props.displayFillPicker && <div
           id="stackOrderController" className="toolbarSectionWrapper"
         >
           <div className="toolbarSection">
@@ -19,12 +28,14 @@ class Toolbar extends React.Component {
         </div>
         }
 
-        <div id="drawTools" className="toolbarSectionWrapper">
+        {!this.props.displayFillPicker && <div id="drawTools" className="toolbarSectionWrapper">
           <div className="toolbarSection">
             <div className="buttonWrapper"><button onClick={this.props.insertRect}><FiSquare /></button></div>
             <div className="buttonWrapper"><button onClick={this.props.insertCircle}><FiCircle /></button></div>
           </div>
         </div>
+        }
+
         {this.props.displayFillPicker && <div
           id="fillPicker" className="toolbarSectionWrapper"
         >

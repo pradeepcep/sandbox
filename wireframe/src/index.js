@@ -25,7 +25,7 @@ class WireframeElement extends React.Component {
   }
 
   handleChange(txRef) {
-    if (this.props.isSelected) {
+    if (this.props.isSelected && txRef && this.state.elRef) {
       // we need to attach transformer manually
       txRef.setNode(this.state.elRef);
       txRef.getLayer().batchDraw();
@@ -130,6 +130,7 @@ class App extends React.Component {
     this.changeFill = this.changeFill.bind(this);
     this.handlePushElementDown = this.handlePushElementDown.bind(this);
     this.handlePushElementUp = this.handlePushElementUp.bind(this);
+    this.handleDeleteElement = this.handleDeleteElement.bind(this);
   }
 
   insertElementDraft(elementType) {
@@ -218,6 +219,20 @@ class App extends React.Component {
     });
   }
 
+  handleDeleteElement() {
+    const selectedElId = this.state.selectedElId;
+    if (!selectedElId) return () => {};
+
+    let elements = this.state.elements.slice();
+    const elementInStore = elements.find(i => i.elId === selectedElId);
+    const elementStoreIndex = elements.indexOf(elementInStore);
+    elements.splice(elementStoreIndex, 1);
+    this.setState({
+      elements: elements,
+    });
+    this.handleSelectElement(null);
+  }
+
   handleChangeElement(changedElId, newProps) {
     const elements = this.state.elements.map((el, idx) => {
       if (el.elId === changedElId) {
@@ -253,6 +268,7 @@ class App extends React.Component {
         handlePushElementDown={this.handlePushElementDown}
         handlePushElementUp={this.handlePushElementUp}
         displayFillPicker={this.state.displayFillPicker}
+        handleDeleteElement={this.handleDeleteElement}
       />
       <Stage
         className='canvasRoot'
