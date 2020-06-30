@@ -1,0 +1,8 @@
+{
+  "short_name": "Wireframe",
+  "name": "Bare-minimum wireframing tool that doesn't get in the way",
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}
