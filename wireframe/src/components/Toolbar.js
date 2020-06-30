@@ -9,6 +9,7 @@ class Toolbar extends React.Component {
     return (
       <div id="toolbar">
         <button onClick={this.props.insertRect}>Rect</button>
+        <button onClick={this.props.insertCircle}>Circle</button>
       </div>
     )
   }

@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Stage, Layer, Rect, Transformer } from 'react-konva';
+import { Stage, Layer, Rect, Circle, Transformer } from 'react-konva';
 import uuid from "uuid";
 
 import Toolbar from './components/Toolbar';
@@ -80,21 +80,37 @@ class WireframeElement extends React.Component {
       },
     };
 
+    let wireframeElement = null;
+
     if (this.props.elementType === 'rect') {
-      return (
-        <React.Fragment>
-          <Rect
-            {...this.props.elProps}
-            {...wireframeElementProps}
-          />
-          {this.props.isSelected && (
-            <Transformer
-              {...txProps}
-            />
-          )}
-        </React.Fragment>
+      wireframeElement = (
+        <Rect
+          {...this.props.elProps}
+          {...wireframeElementProps}
+        />
+      );
+    } else if (this.props.elementType === 'circle') {
+      wireframeElement = (
+        <Circle
+          {...this.props.elProps}
+          {...wireframeElementProps}
+        />
       );
     }
+
+    if (!wireframeElement) {
+      return;
+    }
+    return (
+      <React.Fragment>
+        {wireframeElement}
+        {this.props.isSelected && (
+          <Transformer
+            {...txProps}
+          />
+        )}
+      </React.Fragment>
+    );
   }
 }
 
@@ -126,9 +142,23 @@ class App extends React.Component {
         width: 100,
         height: 100,
       });
+    } else if (elementType === 'circle') {
+      elementProps.props = Object.assign({}, elementProps.props, {
+        radius: 50,
+      });
     }
 
     return elementProps;
+  }
+
+  insertElement(elementType) {
+    return () => {
+      const elements = this.state.elements.slice();
+      let insertedElement = this.insertElementDraft(elementType);
+      this.setState({
+        elements: elements.concat([insertedElement]),
+      });
+    }
   }
 
   handleSelectElement(selectedElId) {
@@ -149,16 +179,6 @@ class App extends React.Component {
     });
   }
 
-  insertElement(elementType) {
-    return () => {
-      const elements = this.state.elements.slice();
-      let insertedElement = this.insertElementDraft(elementType);
-      this.setState({
-        elements: elements.concat([insertedElement]),
-      });
-    }
-  }
-
   handleDeselect(e) {
     // deselect when clicked on empty area
     const clickedOnEmpty = e.target === e.target.getStage();
@@ -176,6 +196,7 @@ class App extends React.Component {
       <>
       <Toolbar
         insertRect={this.insertElement('rect')}
+        insertCircle={this.insertElement('circle')}
       />
       <Stage
         className='canvasRoot'
