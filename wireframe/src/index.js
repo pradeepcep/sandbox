@@ -128,6 +128,8 @@ class App extends React.Component {
     this.handleSelectElement = this.handleSelectElement.bind(this);
     this.handleDeselect = this.handleDeselect.bind(this);
     this.changeFill = this.changeFill.bind(this);
+    this.handlePushElementDown = this.handlePushElementDown.bind(this);
+    this.handlePushElementUp = this.handlePushElementUp.bind(this);
   }
 
   insertElementDraft(elementType) {
@@ -188,6 +190,34 @@ class App extends React.Component {
     }
   }
 
+  handlePushElementDown() {
+    const selectedElId = this.state.selectedElId;
+    if (!selectedElId) return () => {};
+
+    let elements = this.state.elements.slice();
+    const elementInStore = elements.find(i => i.elId === selectedElId);
+    const elementStoreIndex = elements.indexOf(elementInStore);
+    elements.splice(elementStoreIndex, 1);
+    elements.unshift(elementInStore);
+    this.setState({
+      elements: elements,
+    });
+  }
+
+  handlePushElementUp() {
+    const selectedElId = this.state.selectedElId;
+    if (!selectedElId) return () => {};
+
+    let elements = this.state.elements.slice();
+    const elementInStore = elements.find(i => i.elId === selectedElId);
+    const elementStoreIndex = elements.indexOf(elementInStore);
+    elements.splice(elementStoreIndex, 1);
+    elements.push(elementInStore);
+    this.setState({
+      elements: elements,
+    });
+  }
+
   handleChangeElement(changedElId, newProps) {
     const elements = this.state.elements.map((el, idx) => {
       if (el.elId === changedElId) {
@@ -195,6 +225,7 @@ class App extends React.Component {
       }
       return el;
     });
+
     this.setState({
       elements: elements,
     });
@@ -219,6 +250,8 @@ class App extends React.Component {
         insertRect={this.insertElement('rect')}
         insertCircle={this.insertElement('circle')}
         changeFill={this.changeFill}
+        handlePushElementDown={this.handlePushElementDown}
+        handlePushElementUp={this.handlePushElementUp}
         displayFillPicker={this.state.displayFillPicker}
       />
       <Stage

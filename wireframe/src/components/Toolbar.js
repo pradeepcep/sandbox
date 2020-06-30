@@ -1,5 +1,5 @@
 import React from 'react';
-import { FiSquare, FiCircle, FiDroplet } from "react-icons/fi";
+import { FiSquare, FiCircle, FiDroplet, FiArrowDown, FiArrowUp } from "react-icons/fi";
 
 class Toolbar extends React.Component {
   constructor(props) {
@@ -9,6 +9,16 @@ class Toolbar extends React.Component {
   render() {
     return (
       <div id="toolbar">
+        {this.props.displayFillPicker && <div
+          id="stackOrderController" className="toolbarSectionWrapper"
+        >
+          <div className="toolbarSection">
+            <div className="buttonWrapper" title="Bring to Bottom"><button onClick={this.props.handlePushElementDown}><FiArrowDown /></button></div>
+            <div className="buttonWrapper" title="Bring to Top"><button onClick={this.props.handlePushElementUp}><FiArrowUp /></button></div>
+          </div>
+        </div>
+        }
+
         <div id="drawTools" className="toolbarSectionWrapper">
           <div className="toolbarSection">
             <div className="buttonWrapper"><button onClick={this.props.insertRect}><FiSquare /></button></div>
