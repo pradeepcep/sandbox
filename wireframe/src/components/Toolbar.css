@@ -1,0 +1,118 @@
+:root {
+  --palette-color-darkest: #000000;
+  --palette-color-darker: #333333;
+  --palette-color-dark: #777777;
+  --palette-color-light: #aaaaaa;
+  --palette-color-lighter: #cccccc;
+  --palette-color-lightest: #ffffff;
+  --palette-color-contrast: #e34d44;
+  --palette-color-secondaryContrast: #1e5b71;
+}
+
+#toolbar {
+  z-index: 0;
+  position: absolute;
+  top: 1rem;
+  left: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.toolbarSectionWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.toolbarSectionIcon {
+  display: inline-block;
+  font-size: 1rem;
+}
+
+.toolbarSection {
+  background-color: #343434;
+  border: 0.2rem solid #f0f0f0;
+  border-radius: 0.5rem;
+  display: inline-block;
+}
+
+.toolbarSection .buttonWrapper {
+  margin: 0.1rem;
+  padding: 0;
+  display: inline-block;
+}
+
+.toolbarSection .buttonWrapper button {
+  background-color: inherit;
+  font-size: 1.5rem;
+  border: none;
+  height: 2rem;
+  width: 2rem;
+  padding: 0.2rem;
+  margin: 0;
+  color: #efefef;
+  outline: none;
+}
+
+.toolbarSection .buttonWrapper:first-child button {
+  border-top-left-radius: 0.2rem;
+  border-bottom-left-radius: 0.2rem;
+}
+
+.toolbarSection .buttonWrapper:last-child button {
+  border-top-right-radius: 0.2rem;
+  border-bottom-right-radius: 0.2rem;
+}
+
+.toolbarSection .buttonWrapper button:hover {
+  background-color: #555555;
+  color: #ffffff;
+  cursor: pointer;
+  outline: none;
+}
+
+#fillPicker {
+  margin: 0 2rem;
+}
+
+#fillPicker .toolbarSection {
+  background-color: transparent!important;
+}
+
+#fillPicker button:hover {
+  opacity: 0.8;
+}
+
+.fillDarkest {
+  background-color: var(--palette-color-darkest)!important;
+}
+
+.fillDarker {
+  background-color: var(--palette-color-darker)!important;
+}
+
+.fillDark {
+  background-color: var(--palette-color-dark)!important;
+}
+
+.fillLight {
+  background-color: var(--palette-color-light)!important;
+}
+
+.fillLighter {
+  background-color: var(--palette-color-lighter)!important;
+}
+
+.fillLightest {
+  background-color: var(--palette-color-lightest)!important;
+}
+
+.fillContrast {
+  background-color: var(--palette-color-contrast)!important;
+}
+
+.fillSecondaryContrast {
+  background-color: var(--palette-color-secondaryContrast)!important;
+}

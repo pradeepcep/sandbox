@@ -4,6 +4,7 @@ import { Stage, Layer, Rect, Circle, Transformer } from 'react-konva';
 import uuid from "uuid";
 
 import Toolbar from './components/Toolbar';
+import './components/Toolbar.css';
 import './index.css';
 
 
@@ -85,15 +86,15 @@ class WireframeElement extends React.Component {
     if (this.props.elementType === 'rect') {
       wireframeElement = (
         <Rect
-          {...this.props.elProps}
           {...wireframeElementProps}
+          {...this.props.elProps}
         />
       );
     } else if (this.props.elementType === 'circle') {
       wireframeElement = (
         <Circle
-          {...this.props.elProps}
           {...wireframeElementProps}
+          {...this.props.elProps}
         />
       );
     }
@@ -121,18 +122,20 @@ class App extends React.Component {
     this.state = {
       elements: [],
       selectedElId: null,
+      displayFillPicker: false,
     };
     this.insertElement = this.insertElement.bind(this);
     this.handleSelectElement = this.handleSelectElement.bind(this);
     this.handleDeselect = this.handleDeselect.bind(this);
+    this.changeFill = this.changeFill.bind(this);
   }
 
   insertElementDraft(elementType) {
     let elementProps = {
       elId: uuid.v4(),
       props: {
-        x: Math.floor(window.innerWidth / 3),
-        y: Math.floor(window.innerHeight / 3),
+        x: 55,
+        y: 55,
       },
       elType: elementType,
     };
@@ -164,7 +167,25 @@ class App extends React.Component {
   handleSelectElement(selectedElId) {
     this.setState({
       selectedElId: selectedElId,
+      displayFillPicker: selectedElId && true,
     });
+  }
+
+  changeFill(fillColor) {
+    const selectedElId = this.state.selectedElId;
+    if (!selectedElId) return () => {};
+
+    return () => {
+      const elements = this.state.elements.map((el, idx) => {
+        if (el.elId === selectedElId) {
+          el.props = Object.assign({}, el.props, {fill: fillColor});
+        }
+        return el;
+      });
+      this.setState({
+        elements: elements,
+      });
+    }
   }
 
   handleChangeElement(changedElId, newProps) {
@@ -197,6 +218,8 @@ class App extends React.Component {
       <Toolbar
         insertRect={this.insertElement('rect')}
         insertCircle={this.insertElement('circle')}
+        changeFill={this.changeFill}
+        displayFillPicker={this.state.displayFillPicker}
       />
       <Stage
         className='canvasRoot'
