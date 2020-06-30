@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Stage, Layer, Rect, Circle, Transformer } from 'react-konva';
 import uuid from "uuid";
+import Firebase from 'firebase';
 
 import Toolbar from './components/Toolbar';
 import './components/Toolbar.css';
@@ -119,11 +120,31 @@ class WireframeElement extends React.Component {
 class App extends React.Component {
   constructor(props) {
     super(props);
+
+    // Initialize Firebase
+    var firebaseConfig = {
+      apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+      authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+      databaseURL: process.env.REACT_APP_FIREBASE_DATABASE_URL,
+      projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+      storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+      messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+      appId: process.env.REACT_APP_FIREBASE_APP_ID,
+      measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID,
+    };
+    Firebase.initializeApp(firebaseConfig);
+    Firebase.analytics();
+    window.fb = Firebase;
+    window.u = uuid.v4;
+
     this.state = {
       elements: [],
       selectedElId: null,
       displayFillPicker: false,
+      projectHash: window.location.hash.substring(1),
+      isPageLoading: true,
     };
+
     this.insertElement = this.insertElement.bind(this);
     this.handleSelectElement = this.handleSelectElement.bind(this);
     this.handleDeselect = this.handleDeselect.bind(this);
@@ -131,11 +152,19 @@ class App extends React.Component {
     this.handlePushElementDown = this.handlePushElementDown.bind(this);
     this.handlePushElementUp = this.handlePushElementUp.bind(this);
     this.handleDeleteElement = this.handleDeleteElement.bind(this);
+    this.handleSaveProject = this.handleSaveProject.bind(this);
+  }
+
+  componentDidUpdate() {
+    if (this.state.projectHash) {
+      Firebase.database().ref('/projects/' + this.state.projectHash + '/').child('elements').set(this.state.elements);
+    }
   }
 
   insertElementDraft(elementType) {
     let elementProps = {
       elId: uuid.v4(),
+
       props: {
         x: 55,
         y: 55,
@@ -254,11 +283,44 @@ class App extends React.Component {
     }
   }
 
-  componentDidMount() {
+  handleSaveProject() {
+    let projectHash = this.state.projectHash;
+    if (!projectHash) {
+      projectHash = uuid.v4();
+    }
+    this.setState({
+      projectHash
+    });
+    window.location.hash = projectHash;
+  }
 
+  componentDidMount() {
+    if (this.state.projectHash) {
+      Firebase.database().ref('/projects/' + this.state.projectHash + '/').on('value', snapshot => {
+        let state = snapshot.val();
+        console.log('loaded project', state);
+        if (state) {
+          this.setState({
+            elements: state.elements,
+            isPageLoading: false,
+          });
+        } else {
+          window.location.hash = '';
+          this.setState({
+            projectHash: null,
+            isPageLoading: false,
+          });
+        }
+      });
+    } else {
+      this.setState({
+        isPageLoading: false,
+      });
+    }
   }
 
   render() {
+    console.log('state', this.state);
     return (
       <>
       <Toolbar
@@ -269,6 +331,7 @@ class App extends React.Component {
         handlePushElementUp={this.handlePushElementUp}
         displayFillPicker={this.state.displayFillPicker}
         handleDeleteElement={this.handleDeleteElement}
+        handleSaveProject={this.handleSaveProject}
       />
       <Stage
         className='canvasRoot'
@@ -292,6 +355,12 @@ class App extends React.Component {
           })}
         </Layer>
       </Stage>
+      {this.state.isPageLoading && <div
+        id="pageLoadingMessageWrapper"
+      >
+        <div id="pageLoadingMessage">Loading. Please wait..</div>
+      </div>
+      }
       </>
     );
   }

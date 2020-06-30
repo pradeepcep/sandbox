@@ -1,5 +1,5 @@
 import React from 'react';
-import { FiSquare, FiCircle, FiDroplet, FiArrowDown, FiArrowUp, FiTrash } from "react-icons/fi";
+import { FiSquare, FiCircle, FiDroplet, FiArrowDown, FiArrowUp, FiTrash, FiSave } from "react-icons/fi";
 
 class Toolbar extends React.Component {
   constructor(props) {
@@ -52,6 +52,14 @@ class Toolbar extends React.Component {
           </div>
         </div>
         }
+
+        {!this.props.displayFillPicker && <div id="projectTools" className="toolbarSectionWrapper">
+          <div className="toolbarSection">
+            <div className="buttonWrapper"><button onClick={this.props.handleSaveProject}><FiSave /></button></div>
+          </div>
+        </div>
+        }
+
       </div>
     )
   }
